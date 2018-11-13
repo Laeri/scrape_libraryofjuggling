@@ -1,4 +1,4 @@
-# crawl_libraryofjuggling
+# scrape_libraryofjuggling
 Extract juggling trick data (name, difficulty, prerequisites) from http://libraryofjuggling.com/ with python and scrapy.
 
 The scraped data is written to a csv file, every row representing a trick in the format:
