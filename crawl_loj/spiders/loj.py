@@ -13,7 +13,7 @@ class LojSpider(scrapy.Spider):
     trick_data = []
     csv_file = open('juggling_tricks.csv', 'w')
     csv_writer = csv.writer(csv_file)
-    csv_writer.writerows([['Name', 'NumBalls', 'Difficulty', 'Prerequisites']])
+    csv_writer.writerows([['Name', 'NumBalls', 'Difficulty', 'URL', 'Prerequisites']])
 
     def parse(self, response):
         # a panel that contains links to all available juggling tricks
@@ -51,7 +51,8 @@ class LojSpider(scrapy.Spider):
         trick_data.difficulty = response.xpath('//ul[@id="otherinfo"]/li')[1].xpath('.//text()')[1].extract().replace(' ', '')
         trick_data.prerequisites = map(lambda plink: self.canonicalize_name(plink),
                                        response.xpath('//ul[@id="otherinfo"]/li')[2].xpath('a/@href').extract())
-        data = [trick_data.name, trick_data.num_balls, trick_data.difficulty]
+        trick_data.url = response.url
+        data = [trick_data.name, trick_data.num_balls, trick_data.difficulty, trick_data.url]
         for p in trick_data.prerequisites:
             data.append(p)
         self.csv_writer.writerows([data])
